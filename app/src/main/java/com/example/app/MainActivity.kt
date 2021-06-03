@@ -1,11 +1,23 @@
 package com.example.app
 
+import android.app.Activity
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.util.Log
+import android.widget.Button
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : Activity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        val button = Button(this).apply {
+            tag = "button"
+            text = "MainActivity"
+            setOnClickListener {
+                Log.i("MainActivity", "button on click")
+            }
+        }
+
+        setContentView(button)
     }
 }

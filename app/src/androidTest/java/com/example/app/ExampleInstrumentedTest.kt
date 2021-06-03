@@ -1,8 +1,16 @@
 package com.example.app
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
-import org.junit.Assert.assertEquals
+import org.hamcrest.Matchers
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -13,10 +21,27 @@ import org.junit.runner.RunWith
  */
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
+
+    @Rule
+    @JvmField
+    val rule = RepeatRule()
+
     @Test
-    fun useAppContext() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.example.app", appContext.packageName)
+    @Repeat(100)
+    fun test() {
+        val intent = Intent()
+        val packageName = ApplicationProvider.getApplicationContext<Context>().packageName
+        intent.setClassName(
+            packageName,
+            "com.example.app.MainActivity"
+        )
+        ActivityScenario.launch<Activity>(intent)
+
+        Espresso.onView(
+            ViewMatchers.withTagValue(
+                Matchers.`is`("button")
+            )
+        ).perform(ViewActions.click())
     }
+
 }
